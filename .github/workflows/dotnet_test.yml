@@ -1,0 +1,40 @@
+﻿name: Build and Test
+
+on:
+  push:
+    branches:
+      - "**"
+
+jobs:
+  build:
+    runs-on: ${{ matrix.operating-system }}
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+        dotnet-version: ["6.0"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Setup .NET SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Build Debug
+        run: dotnet build -c Debug TestWebApp-2022.sln
+
+      - name: Test Debug
+        run: dotnet test -c Debug -v normal --logger:"console;verbosity=detailed" TestWebApp-2022.sln
+
+      - name: Build Release
+        run: dotnet build -c Release TestWebApp-2022.sln
+
+      - name: Test Release
+        run: dotnet test -c Release -v normal --logger:"console;verbosity=detailed" TestWebApp-2022.sln
+

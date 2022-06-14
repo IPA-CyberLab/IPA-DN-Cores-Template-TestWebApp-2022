@@ -1,0 +1,68 @@
+﻿@model AspNetErrorModel
+@{
+    Model._MarkNotNull();
+    Page.Title = Page.Stb["THINWEB_ERROR"];
+
+    bool allowHtml = false;
+    string icon = "fas fa-exclamation-triangle";
+
+    string ErrorStr = ThinWebClientErrorUtil.GetFriendlyErrorMessage(Model.ErrorInfo, Page);
+
+    VpnException? vpnError = Model.ErrorInfo as VpnException;
+    if (vpnError != null)
+    {
+        if (vpnError.HasRecvUrl)
+        {
+            // URL 受信。URL にジャンプ。
+            Context.Response.Redirect(vpnError.RecvUrl);
+        }
+    }
+
+    // 戻り先 URL
+    string url = "/";
+    string id = Context.Request._GetQueryStringFirst("id");
+    if (id._IsFilled())
+    {
+        url += "?pcid=" + id._MakeVerySafeAsciiOnlyNonSpaceFileName();
+    }
+
+    string jsTitle = Page.Stb["THINWEB_ERROR_MSG"];
+
+    if (vpnError?.Error == VpnError.ERR_DESK_GUACD_NOT_SUPPORTED_VER)
+    {
+        // サーバーアプリのアップデートが必要
+        jsTitle = "接続に成功しました";
+        ErrorStr = "接続先「シン・テレワークシステム サーバー」のバージョンが古い (2021 年 8 月以前のバージョンである) ため、HTML5 版クライアントによる接続を行なうためには、一回だけ、アップデートする必要があります。<BR><BR>お手数ですが、接続先「シン・テレワークシステム サーバー」のバージョンを、2021 年 8 月以降にリリースされたできるだけ新しいバージョンにアップデート</a></b> してください。<BR><BR>アップデートするために接続先 「シン・テレワークシステム サーバー」 に接続するためには、既存の通常クライアントアプリ版の 「シン・テレワークシステム クライアント」 をご利用いただけます。<BR><BR>アップデートを実施いただくことにより、すぐに、この画面から HTML5 版クライアントで接続ができるようになります。";
+        allowHtml = true;
+        icon = "far fa-thumbs-up";
+    }
+
+}
+
+<div class="box">
+    <div class="content">
+        <article class="message is-warning">
+            <div class="message-header">
+                <p><i class="fas fa-exclamation-triangle"></i>&nbsp;@ErrorStr</p>
+            </div>
+            <div class="message-body">
+                <p><stb>THINWEB_ERROR1</stb><b><stb>THINWEB_ERROR4</stb><a href="@url"><stb>THINWEB_ERROR2</stb></a></b><stb>THINWEB_ERROR3</stb></p>
+                <p><b><stb>THINWEB_ERROR5</stb></b><BR>@ErrorStr</p>
+                <p><b><stb>THINWEB_ERROR6</stb></b><BR>@DateTimeOffset.Now._ToDtStr(withMSsecs: true)</p>
+                <p><b><stb>THINWEB_ERROR7</stb></b><br>@Model.ErrorPath</p>
+                <p><b><stb>THINWEB_ERROR8</stb></b><br>@Model.RequestId</p>
+                <p><b><stb>THINWEB_ERROR9</stb></b><BR>@Model.WebServerName</p>
+                <p><b><stb>THINWEB_ERROR10</stb></b><BR>@Model.WebClientName</p>
+            </div>
+        </article>
+    </div>
+</div>
+
+@section Scripts{
+
+    <!-- Init -->
+    <script>
+        Main.ThinWebClient_Error_PageLoad(window, document, "@ErrorStr._JavaScriptSafeStrEncode()", "@jsTitle._JavaScriptSafeStrEncode()", "@url._JavaScriptSafeStrEncode()", @allowHtml._ToBoolStrLower(), "@icon");
+    </script>
+
+}

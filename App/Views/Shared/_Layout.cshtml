@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@Page.FullTitle</title>
+    <link rel="stylesheet" href="~/css/Main.css" asp-append-version="true" />
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                @if (Page.CurrentLanguage.Key._IsSamei("ja"))
+                {
+                    <img src="~/images/logo.jpg" width="318" height="28" asp-append-version="true">
+                }
+                else
+                {
+                    <img src="~/images/logo_en.jpg" width="318" height="28" asp-append-version="true">
+                }
+            </a>
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-link" style="font-weight: bold" href="/"><i class="fas fa-laptop"></i>&nbsp;<stb>THINWEB_BANNER_NEW</stb></a>
+                    <a class="button is-warning is-light" style="font-weight: bold" href="/ThinWebClient/help/" target="_blank"><i class="far fa-question-circle"></i>&nbsp;<stb>THINWEB_BANNER_HELP</stb></a>
+                    <a class="button is-info is-light" style="font-weight: bold" href="@Page.Stb["$THINWEB_WEBPAGE_LINK$"]" target="_blank"><i class="fas fa-globe"></i>&nbsp;<stb>THINWEB_BANNER_WEB</stb></a>
+                    <div class="select">
+                        <select class="input is-info" onChange="location.href = value;" asp-items="Page.GetLanguageSelectHtmlBox(this.Context.Request.GetDisplayUrl()._ParseUrl())"></select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container is-fluid">
+        <p>　</p>
+        @RenderBody()
+        <p>　</p>
+    </div>
+
+    <footer class="footer">
+        <div class="content has-text-left">
+            <p>@Page.SiteName | <a href="@Page.Stb["$THINWEB_WEBPAGE_LINK$"]"><stb>$APPSHORT$</stb></a> | <a href="https://www.apache.org/licenses/LICENSE-2.0"><stb>THINWEB_FOOTER_TERMS</stb></a> | <a href="/js/bundle.js.LICENSE.txt"><stb>THINWEB_FOOTER_OSS</stb> 1</a>, <a href="https://raw.githubusercontent.com/IPA-CyberLab/IPA-DN-Ultra/master/src/bin/hamcore/ThinWebGateway/ThinWebGatewayLicense.txt">2</a><br>Copyright &copy; @DateTime.Now.Year.ToString() <stb>THINWEB_FOOTER_COPYRIGHT</stb><br>Version: App=@IPA.Cores.Basic.Dbg.GetCurrentGitCommitId(), CoresLib=@IPA.Cores.Basic.Dbg.GetCurrentCoresLibGitCommitId()</p><br>
+        </div>
+    </footer>
+
+    <script src="~/js/strtable.js" asp-append-version="true"></script>
+    <script src="~/js/bundle.js" asp-append-version="true"></script>
+    <script>Main.Cores_InitJavaScriptWithPageContext("@Page.GetJavaScriptInitContext()._ObjectToJson()._JavaScriptSafeStrEncode()")</script>
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

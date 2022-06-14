@@ -1,0 +1,40 @@
+﻿# シン・テレワークシステム アプリケーション内 UI カスタマイズファイル
+# (言語: 英語)
+# 
+# このファイルの内容は、シン・テレワークシステム プライベート版の構築を行なう際に、必ず変更すること。
+# 
+# 詳しくは、構築マニュアルの以下の節を参照すること。
+# 8-1. アプリケーションの UI の高度なカスタマイズ方法
+# 8-2. アプリケーションの ID (AppId) の変更によるユニーク化
+
+
+# シン・テレワークシステム プライベート版構築者向け TODO:
+# 以下の項目の文字列は、必ず変更し、ユニーク化すること。
+# 以下の項目は、Windows の「スタートメニュー」のフォルダ名や、
+# プログラムのアンインストール項目名として使用されるものである。
+# いずれも、ユニークなものにしなければならない。
+# 詳しくは、構築マニュアル「8-2. アプリケーションの ID (AppId) の変更によるユニーク化」を参照すること。
+
+# --- ユニーク化の必要性 ここから ---
+$APPFULL$                   TestWebApp (Private Version)
+$APPFULL_SERVER$            TestWebApp (Private Version)
+$APPFULL_CLIENT$            TestWebApp (Private Version)
+
+$APPSHORT$                  TestWebApp (Private)
+$APPSHORT_SERVER$           TestWebApp (Private)
+$APPSHORT_CLIENT$           TestWebApp (Private)
+
+$APPVERYSHORT$              TestWebApp Private
+$APPVERYSHORT_SERVER$       TestWebApp Private Server
+$APPVERYSHORT_CLIENT$       TestWebApp Private Client
+
+$APPSHORT_EN$               TestWebApp Private Version
+
+# ※ $APP_ID_PREFIX$ の値は、Vars.h の APP_ID_PREFIX に指定する文字列をすべて大文字にした文字列を指定すること。
+$APP_ID_PREFIX$				PRIVATE
+# --- ユニーク化の必要性 ここまで ---
+
+
+SE_COMPANY_URL			https://github.com/IPA-CyberLab/
+
+
