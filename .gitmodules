@@ -2,5 +2,5 @@
 	path = submodules/IPA-DN-Cores
 	url = https://github.com/IPA-CyberLab/IPA-DN-Cores.git
 [submodule "App/Scripts/submodules/IPA-DN-WebNeko"]
-	path = App/Scripts/submodules/IPA-DN-WebNeko
+	path = WebApp/Scripts/submodules/IPA-DN-WebNeko
 	url = https://github.com/IPA-CyberLab/IPA-DN-WebNeko.git
