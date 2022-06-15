@@ -94,7 +94,7 @@ public class WebAppControllerBase : Controller
             base.OnActionExecuting(context);
         }
     }
-
+    
     protected AspNetCookieOptions GetCookieOption() => new AspNetCookieOptions(domain: this.Service.AdminForm_GetCurrentDynamicConfig()!.Service_CookieDomainName);
 }
 
