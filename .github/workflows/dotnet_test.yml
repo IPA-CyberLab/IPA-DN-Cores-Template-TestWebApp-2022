@@ -30,11 +30,11 @@ jobs:
         run: dotnet build -c Debug TestWebApp-2022.sln
 
       - name: Test Debug
-        run: dotnet test -c Debug -v normal --logger:"console;verbosity=detailed" TestWebApp-2022.sln
+        run: dotnet test -c Debug -v normal --logger:"console;verbosity=detailed" TestWebApp.sln
 
       - name: Build Release
-        run: dotnet build -c Release TestWebApp-2022.sln
+        run: dotnet build -c Release TestWebApp.sln
 
       - name: Test Release
-        run: dotnet test -c Release -v normal --logger:"console;verbosity=detailed" TestWebApp-2022.sln
+        run: dotnet test -c Release -v normal --logger:"console;verbosity=detailed" TestWebApp.sln
 
