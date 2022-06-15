@@ -46,17 +46,42 @@ using static IPA.Cores.Globals.Web;
 using IPA.Cores.Codes;
 using IPA.Cores.Helper.Codes;
 using static IPA.Cores.Globals.Codes;
+using IPA.App.TestWebApp;
 
 namespace IPA.App.AppVars
 {
-    public static partial class TestWebAppVars
+    public static partial class AppVarsGlobal
     {
+        // 定数
+        public static readonly Copenhagen<int> Web_MaxBodySizeForUsers = 1 * 1024 * 1024;
+        public static readonly Copenhagen<int> Web_MaxConcurrentKestrelConnectionsForUsers = 1000 * Math.Max(Environment.ProcessorCount, 1);
+
         // 初期化
         public static void InitMain()
         {
             // 許容する TLS のバージョンを設定するには、以下の行をコメントアウトして設定を変更すること。
             //CoresConfig.SslSettings.DefaultSslProtocolVersionsAsClient.TrySet(SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13);
             //CoresConfig.SslSettings.DefaultSslProtocolVersionsAsServer.TrySet(SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13);
+
+            // HTTPS Web サーバーの証明書マネージャ (CertVault) の初期設定
+            // ※ この設定を変更する前に、一度でも ThinWebClient を起動した場合は、
+            //    初回起動時に設定ファイル「ThinWebClientApp/Local/App_IPA.App.ThinWebClientApp/Config/CertVault/settings.json」が
+            //    自動生成されている。
+            //    その後にこの Vars.cs ファイルの内容を書き換えても、
+            //    「ThinWebClientApp/Local/App_IPA.App.ThinWebClientApp/Config/CertVault/settings.json」
+            //    ファイルの内容には適用されない。
+            //    このような場合には、
+            //    一度 ThinWebClient を終了し、
+            //    「ThinWebClientApp/Local/App_IPA.App.ThinWebClientApp/Config/CertVault/settings.json」
+            //    を削除してから再度 ThinWebClient を起動すると、以下の内容が適用される。
+
+            // true に設定すると、Let's Encrypt を使用して証明書を自動取得・更新するように試みるようになる。
+            // Let's Encrypt を使用する場合は true、使用しない場合は false に設定すること。
+            // 通常は、Let's Encrypt を使用せず、証明書を別に管理し、
+            // 静的証明書ファイル (ThinWebClientApp/Local/App_IPA.App.ThinWebClientApp/Config/CertVault/StaticCerts/default.pfx) を設置しメンテナンスすることを推奨する。
+            CoresConfig.CertVaultSettings.DefaultUseAcme.TrySetValue(false);
+
+            CoresConfig.CertVaultSettings.DefaultNonAcmeEnableAutoGenerateSubjectNameCert.TrySetValue(false);   // これは、false を設定することを推奨する。
         }
 
         // 証明書データを保持するクラス
@@ -75,17 +100,21 @@ namespace IPA.App.AppVars
 
         }
 
-        // TestWebApp 固有の設定クラス
-        public static partial class TestWebAppVarsConfig
+
+        // Web サーバーの設定
+        public static void InitalizeWebServerConfig(HttpServerOptions opt)
         {
-            public static void InitMain()
-            {
-            }
+            // false にすると robots.txt ファイルを設置しなくなります。
+            opt.DenyRobots = false;
+
+            // true にすると HTTP ポートへのアクセス時に自動的に HTTPS ポートにリダイレクトするようになります。
+            // 適切な SSL サーバー証明書が利用されていない場合、Web ブラウザで証明書エラーが発生します。
+            opt.AutomaticRedirectToHttpsIfPossible = false;
         }
     }
 
     // TestWebApp の動作をカスタマイズするためのクラスです。
-    public class MyTestWebAppHook : TestWebAppHookBase
+    public class MyTestWebAppHook : TestWebAppService.HookBase
     {
     }
 
@@ -99,9 +128,9 @@ namespace IPA.App.AppVars
     }
 
     // 内部ヘルパー
-    public static partial class TestWebAppGlobal
+    public static partial class AppGlobal
     {
-        public static ResourceFileSystem TestWebAppRes => Res.Codes;
+        public static ResourceFileSystem AppRes => Res.Codes;
 
         public static partial class Res
         {

@@ -72,7 +72,7 @@ namespace IPA.App.TestWebApp
             set => throw new NotImplementedException();
         }
 
-        public PageContext(TestWebAppController controller)
+        public PageContext(TestWebAppService service)
         {
         }
     }

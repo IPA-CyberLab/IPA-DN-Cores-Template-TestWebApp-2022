@@ -41,58 +41,54 @@ using IPA.Cores.Web;
 using IPA.Cores.Helper.Web;
 using static IPA.Cores.Globals.Web;
 
-using IPA.App.ThinVars;
+using IPA.App.AppVars;
 
-// 日本語
+namespace IPA.App.TestWebApp;
 
-namespace IPA.App.ThinWebClientApp
+public class Program
 {
-    public class Program
+    public static int Main(string[] args)
     {
-        public static int Main(string[] args)
-        {
-            // ログファイルが何 GB を超えたら自動的に古いものを削除するかの設定
-            CoresConfig.Logger.DefaultAutoDeleteTotalMinSize.Value = 1_000_000_000; // 1GB
+        // ログファイルが何 GB を超えたら自動的に古いものを削除するかの設定
+        CoresConfig.Logger.DefaultAutoDeleteTotalMinSize.Value = 1_000_000_000; // 1GB
 
-            // Vars の InitMain を呼び出す
-            ThinVarsGlobal.InitMain();
-            ThinVarsGlobal.ThinWebClientVarsConfig.InitMain();
+        // Vars の InitMain を呼び出す
+        AppVarsGlobal.InitMain();
 
-            const string appName = "IPA.App.ThinWebClientApp";
+        const string appName = "IPA.App.TestWebApp";
 
-            return StandardMainFunctions.DaemonMain.DoMain(
-                new CoresLibOptions(CoresMode.Application,
-                    appName: appName,
-                    defaultDebugMode: DebugMode.Debug,
-                    defaultPrintStatToConsole: false,
-                    defaultRecordLeakFullStack: false),
-                args: args,
-                getDaemonProc: () =>
+        return StandardMainFunctions.DaemonMain.DoMain(
+            new CoresLibOptions(CoresMode.Application,
+                appName: appName,
+                defaultDebugMode: DebugMode.Debug,
+                defaultPrintStatToConsole: false,
+                defaultRecordLeakFullStack: false),
+            args: args,
+            getDaemonProc: () =>
+            {
+                HttpServerOptions webServerOptions = new HttpServerOptions
                 {
-                    HttpServerOptions webServerOptions = new HttpServerOptions
-                    {
-                        HttpPortsList = 80._SingleList(),
-                        HttpsPortsList = 443._SingleList(),
-                        UseKestrelWithIPACoreStack = false,
-                        DebugKestrelToConsole = false,
-                        UseSimpleBasicAuthentication = false,
-                        HoldSimpleBasicAuthenticationDatabase = false,
-                        AutomaticRedirectToHttpsIfPossible = false,
-                        HiveName = "ThinWebClientWebServer",
-                        DenyRobots = true,
-                        UseGlobalCertVault = true,
-                        StartGlobalCertVaultOnHttpServerStartup = true,
-                        MaxRequestBodySize = ThinWebClientConsts.ControllerMaxBodySizeForUsers,
-                        KestrelMaxConcurrentConnections = ThinWebClientConsts.ControllerMaxConcurrentKestrelConnectionsForUsers,
-                        KestrelMaxUpgradedConnections = ThinWebClientConsts.ControllerMaxConcurrentKestrelConnectionsForUsers,
-                        IPv4Only = false,
-                    };
+                    HttpPortsList = 80._SingleList(),
+                    HttpsPortsList = 443._SingleList(),
+                    UseKestrelWithIPACoreStack = false,
+                    DebugKestrelToConsole = false,
+                    UseSimpleBasicAuthentication = false,
+                    HoldSimpleBasicAuthenticationDatabase = false,
+                    AutomaticRedirectToHttpsIfPossible = false,
+                    HiveName = "TestWebAppWebServer",
+                    DenyRobots = false,
+                    UseGlobalCertVault = true,
+                    StartGlobalCertVaultOnHttpServerStartup = true,
+                    MaxRequestBodySize = AppVarsGlobal.Web_MaxBodySizeForUsers,
+                    KestrelMaxConcurrentConnections = AppVarsGlobal.Web_MaxConcurrentKestrelConnectionsForUsers,
+                    KestrelMaxUpgradedConnections = AppVarsGlobal.Web_MaxConcurrentKestrelConnectionsForUsers,
+                    IPv4Only = false,
+                };
 
-                    // Vars.cs ファイルで Web サーバーオプションを変更可能とする
-                    ThinVarsGlobal.ThinWebClientVarsConfig.InitalizeWebServerConfig(webServerOptions);
+                // Vars.cs ファイルで Web サーバーオプションを変更可能とする
+                AppVarsGlobal.InitalizeWebServerConfig(webServerOptions);
 
-                    return new HttpServerDaemon<Startup>(appName, appName, webServerOptions);
-                });
-        }
+                return new HttpServerDaemon<Startup>(appName, appName, webServerOptions);
+            });
     }
 }

@@ -27,7 +27,7 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
 
       - name: Build Debug
-        run: dotnet build -c Debug TestWebApp-2022.sln
+        run: dotnet build -c Debug TestWebApp.sln
 
       - name: Test Debug
         run: dotnet test -c Debug -v normal --logger:"console;verbosity=detailed" TestWebApp.sln
