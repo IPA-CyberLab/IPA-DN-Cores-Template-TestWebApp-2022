@@ -1,0 +1,12 @@
+﻿$WEBAPP_SITENAME$		テスト Web サイト
+
+WEBAPP_TOP				トップページ
+WEBAPP_LINK_STR			$WEBAPP_SITENAME$ のオープンソース配布サイト
+WEBAPP_LINK_URL			https://github.com/IPA-CyberLab/
+
+WEBAPP_FOOTER_OSS		使用 OSS ライセンス
+WEBAPP_FOOTER_OSS_2_LINK	https://raw.githubusercontent.com/IPA-CyberLab/IPA-DN-Cores/master/LICENSE
+
+WEBAPP_FOOTER_COPYRIGHT	IPA 産業サイバーセキュリティセンター サイバー技術研究室 ＆ NTT 東日本 特殊局. All Rights Reserved.
+
+

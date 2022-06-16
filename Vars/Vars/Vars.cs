@@ -34,6 +34,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Security.Authentication;
 using Microsoft.AspNetCore.Server.Kestrel.Https;
+using Microsoft.AspNetCore.Mvc;
 
 using IPA.Cores.Basic;
 using IPA.Cores.Helper.Basic;
@@ -46,13 +47,14 @@ using static IPA.Cores.Globals.Web;
 using IPA.Cores.Codes;
 using IPA.Cores.Helper.Codes;
 using static IPA.Cores.Globals.Codes;
+
 using IPA.App.TestWebApp;
 
 namespace IPA.App.AppVars
 {
     public static partial class AppVarsGlobal
     {
-        // 定数
+        // 変数型の定数
         public static readonly Copenhagen<int> Web_MaxBodySizeForUsers = 1 * 1024 * 1024;
         public static readonly Copenhagen<int> Web_MaxConcurrentKestrelConnectionsForUsers = 1000 * Math.Max(Environment.ProcessorCount, 1);
 
@@ -93,7 +95,7 @@ namespace IPA.App.AppVars
             // ファイルを Web サーバーの HTTPS サーバー証明書と秘密鍵として取り扱っています。
             // この HTTPS サーバー証明書と秘密鍵の置換は、以下のファイル名を変更するか、または、上記のファイルに使用したい証明書データファイルを上書きすることで可能です。
             static readonly Singleton<PalX509Certificate> WebApiStaticCert_Singleton =
-                new Singleton<PalX509Certificate>(() => new PalX509Certificate(new FilePath(AppGlobal.AppRes,
+                new Singleton<PalX509Certificate>(() => new PalX509Certificate(new FilePath(AppGlobalHelper.AppRes,
                     "Certs/DefaultWebApiStaticCert.pfx")));
 
             public static PalX509Certificate WebApiStaticCert => WebApiStaticCert_Singleton;
@@ -128,8 +130,13 @@ namespace IPA.App.AppVars
     }
 
     // 内部ヘルパー
-    public static partial class AppGlobal
+    public static partial class AppGlobalHelper
     {
+        // ASP.NET MVC グローバル定数
+        public const int Mvc_DefaultDuration = 0;
+        public const ResponseCacheLocation Mvc_DefaultLocation = ResponseCacheLocation.None;
+        public const bool Mvc_DefaultNoStore = true;
+
         public static ResourceFileSystem AppRes => Res.Codes;
 
         public static partial class Res

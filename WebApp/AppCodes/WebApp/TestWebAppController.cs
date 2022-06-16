@@ -47,8 +47,10 @@ using IPA.Cores.Web;
 using IPA.Cores.Helper.Web;
 using static IPA.Cores.Globals.Web;
 
-using IPA.App.TestWebApp;
+using IPA.App.AppVars;
+using static IPA.App.AppVars.AppGlobalHelper;
 
+using IPA.App.TestWebApp;
 
 
 namespace IPA.App.TestWebApp;
@@ -110,7 +112,7 @@ public class TestWebAppController : WebAppControllerBase
     {
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    [ResponseCache(Duration = Mvc_DefaultDuration, Location = Mvc_DefaultLocation, NoStore = Mvc_DefaultNoStore)]
     public async Task<IActionResult> IndexAsync()
     {
         await TaskCompleted;

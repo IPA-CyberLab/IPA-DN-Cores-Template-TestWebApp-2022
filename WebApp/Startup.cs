@@ -62,6 +62,7 @@ public class Startup
             new StrTableLanguage("ja", "Japanese", "日本語", 1041, "ja,jp,sjis,shift_jis,euc", "ja,jp",
                 new StrTable(
                     CodesRes["StrTablePatch/strtable_ja.patch.stb"].String,
+                    CodesRes["WebApp/strtable_webapp_additional_ja.stb"].String,
                     CodesRes["ThinWebClient/strtable_web_additional_ja.stb"].String,
                     CodesRes["ThinController/strtable_ja.stb"].String
                     )));
@@ -70,6 +71,7 @@ public class Startup
             new StrTableLanguage("en", "English", "English", 1033, "en,us,c", "en",
                 new StrTable(
                     CodesRes["StrTablePatch/strtable_en.patch.stb"].String,
+                    CodesRes["WebApp/strtable_webapp_additional_en.stb"].String,
                     CodesRes["ThinWebClient/strtable_web_additional_en.stb"].String,
                     CodesRes["ThinController/strtable_en.stb"].String
                     )));

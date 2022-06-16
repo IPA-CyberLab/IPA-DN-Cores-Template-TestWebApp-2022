@@ -68,7 +68,7 @@ namespace IPA.App.TestWebApp
         // サイト名
         public override string SiteName
         {
-            get => this.Stb["WEBAPP_SITENAME"];
+            get => this.Stb["$WEBAPP_SITENAME$"];
             set => throw new NotImplementedException();
         }
 
