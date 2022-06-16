@@ -13,7 +13,7 @@
             <a class="navbar-item" href="/">
                 @if (Page.CurrentLanguage.Key._IsSamei("ja"))
                 {
-                    <img src="~/images/logo.jpg" width="318" height="28" asp-append-version="true">
+                    <img src="~/images/logo_ja.jpg" width="318" height="28" asp-append-version="true">
                 }
                 else
                 {
@@ -22,9 +22,9 @@
             </a>
             <div class="navbar-item">
                 <div class="buttons">
-                    <a class="button is-link" style="font-weight: bold" href="/"><i class="fas fa-laptop"></i>&nbsp;<stb>THINWEB_BANNER_NEW</stb></a>
-                    <a class="button is-warning is-light" style="font-weight: bold" href="/ThinWebClient/help/" target="_blank"><i class="far fa-question-circle"></i>&nbsp;<stb>THINWEB_BANNER_HELP</stb></a>
-                    <a class="button is-info is-light" style="font-weight: bold" href="@Page.Stb["$THINWEB_WEBPAGE_LINK$"]" target="_blank"><i class="fas fa-globe"></i>&nbsp;<stb>THINWEB_BANNER_WEB</stb></a>
+                    <a class="button is-link" style="font-weight: bold" href="/"><i class="fas fa-laptop"></i>&nbsp;ボタン 1</a>
+                    <a class="button is-warning is-light" style="font-weight: bold" href="/" target="_blank"><i class="far fa-question-circle"></i>&nbsp;ボタン 2</a>
+                    <a class="button is-info is-light" style="font-weight: bold" href="@Page.Stb["WEBAPP_LINK_URL"]" target="_blank"><i class="fas fa-globe"></i>&nbsp;リンク 1</a>
                     <div class="select">
                         <select class="input is-info" onChange="location.href = value;" asp-items="Page.GetLanguageSelectHtmlBox(this.Context.Request.GetDisplayUrl()._ParseUrl())"></select>
                     </div>
