@@ -182,7 +182,10 @@ public partial class TestWebAppService : HadbBasedServiceBase<TestWebAppService.
     protected override void StartImpl()
     {
         // ここで必要な初期化を実施すること (コンストラクタの実行コンテキストではなく、HADB サービスが動作を開始する直前に実行される)
+        // 必要なリソースは、ここで確保すること (例: ライブラリの初期化、インスタンスの作成等)
+        // 注意: ここで確保したリソースは、下記の StopImplAsync で必ず解放するようにすること。解放しなければ、リソースリークが発生する。
 
+        // ここで HADB イベント登録を行なうこと
         this.HadbEventListenerList.RegisterCallback(async (caller, type, state, param) =>
         {
             switch (type)
@@ -201,6 +204,14 @@ public partial class TestWebAppService : HadbBasedServiceBase<TestWebAppService.
         });
     }
 
+    // HADB サービス動作停止直後に呼ばれるリソース解放実装メソッド
+    protected override async Task StopImplAsync(Exception? ex)
+    {
+        // StartImpl で確保されたリソースは、ここで必ず解放すること。解放しなければ、リソースリークが発生する。
+
+        await Task.CompletedTask; // await がないという警告除け (削除して構わない)
+    }
+
     // HADB の DynamicConfig の内容が初期化され、または変更された場合に必ず実行されるメソッド
     void Event_DynamicConfigReloaded()
     {
@@ -212,6 +223,16 @@ public partial class TestWebAppService : HadbBasedServiceBase<TestWebAppService.
     void Event_DataReloaded(bool full)
     {
         // HADB のデータの一部または全部がリロードされた都度必ず実行したい処理をここに記述する
+    }
+
+    // 本 Web アプリの健全性チェック URL が呼び出された場合に起動されるメソッド (健全であると回答する場合は Ok、非健全であると回答する場合は例外を返す)
+    protected override async Task<OkOrExeption> HealthCheckImplAsync(CancellationToken cancel)
+    {
+        await Task.CompletedTask;
+
+        this.Hadb.CheckIfReady(true);
+
+        return new OkOrExeption();
     }
 
 

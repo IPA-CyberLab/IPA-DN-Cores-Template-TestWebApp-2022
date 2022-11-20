@@ -124,8 +124,11 @@ public class Startup
         // AspNetLib による設定を追加
         AspNetLib.Configure(StartupHelper, app, env);
 
-        // 基本的な設定を追加
-        StartupHelper.Configure(app, env);
+        // 認証前の基本的な標準機能の Configure
+        StartupHelper.ConfigurePre(app, env);
+
+        // 標準認証機能の Configure
+        StartupHelper.ConfigureAuth(app, env);
 
         // エラーページを追加
         if (StartupHelper.IsDevelopmentMode)
